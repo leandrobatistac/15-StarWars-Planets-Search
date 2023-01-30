@@ -16,6 +16,7 @@ function APIProvider({ children }) {
       .then(({ results }) => {
         results.map((e) => delete e.residents);
         setObjectPlanets(results);
+        setFilteredObjectPlanets(results);
         setLoading(false);
       });
   }, []);

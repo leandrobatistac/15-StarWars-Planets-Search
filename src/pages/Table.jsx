@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { APIContext } from '../context/APIprovider';
 
 function Table() {
-  const { loading, filteredObjectPlanets, objectPlanets } = useContext(APIContext);
+  const { loading, filteredObjectPlanets } = useContext(APIContext);
 
   return (
     <div>
@@ -27,51 +27,26 @@ function Table() {
             </tr>
           </thead>
 
-          { filteredObjectPlanets.length === 0
-          && (
-            <tbody>
-              { objectPlanets.map((e) => (
-                <tr key={ e.name }>
-                  <th>{ e.name }</th>
-                  <th>{ e.climate }</th>
-                  <th>{ e.created }</th>
-                  <th>{ e.diameter }</th>
-                  <th>{ e.edited }</th>
-                  <th>{ e.gravity }</th>
-                  <th>{ e.orbital_period }</th>
-                  <th>{ e.population }</th>
-                  <th>{ e.rotation_period }</th>
-                  <th>{ e.surface_water }</th>
-                  <th>{ e.terrain }</th>
-                  <th>{ e.url }</th>
-                  <th>{ e.films }</th>
-                </tr>
-              )) }
-            </tbody>
-          )}
+          <tbody>
+            { filteredObjectPlanets.map((e) => (
+              <tr key={ e.name }>
+                <th>{ e.name }</th>
+                <th>{ e.climate }</th>
+                <th>{ e.created }</th>
+                <th>{ e.diameter }</th>
+                <th>{ e.edited }</th>
+                <th>{ e.gravity }</th>
+                <th>{ e.orbital_period }</th>
+                <th>{ e.population }</th>
+                <th>{ e.rotation_period }</th>
+                <th>{ e.surface_water }</th>
+                <th>{ e.terrain }</th>
+                <th>{ e.url }</th>
+                <th>{ e.films }</th>
+              </tr>
+            )) }
+          </tbody>
 
-          { filteredObjectPlanets.length !== 0
-          && (
-            <tbody>
-              { filteredObjectPlanets.map((e) => (
-                <tr key={ e.name }>
-                  <th>{ e.name }</th>
-                  <th>{ e.climate }</th>
-                  <th>{ e.created }</th>
-                  <th>{ e.diameter }</th>
-                  <th>{ e.edited }</th>
-                  <th>{ e.gravity }</th>
-                  <th>{ e.orbital_period }</th>
-                  <th>{ e.population }</th>
-                  <th>{ e.rotation_period }</th>
-                  <th>{ e.surface_water }</th>
-                  <th>{ e.terrain }</th>
-                  <th>{ e.url }</th>
-                  <th>{ e.films }</th>
-                </tr>
-              )) }
-            </tbody>
-          )}
         </table>
       )}
     </div>
