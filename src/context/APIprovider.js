@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 export const APIContext = createContext();
 
 function APIProvider({ children }) {
+  const columnArray = [
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+  ];
+
   const [objectPlanets, setObjectPlanets] = useState(null);
   const [filteredObjectPlanets, setFilteredObjectPlanets] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
   const [loading, setLoading] = useState(true);
-  const [columnOptions, setColumnOptions] = useState([]);
-
-  const columnArray = [
-    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
-  ];
+  const [columnOptions, setColumnOptions] = useState([columnArray]);
 
   useEffect(() => {
     setLoading(true);
@@ -20,10 +20,10 @@ function APIProvider({ children }) {
       .then((response) => response.json())
       .then(({ results }) => {
         results.map((e) => delete e.residents);
+        setColumnOptions(columnArray);
         setObjectPlanets(results);
         setFilteredObjectPlanets(results);
         setLoading(false);
-        setColumnOptions(columnArray);
       });
   }, []);
 

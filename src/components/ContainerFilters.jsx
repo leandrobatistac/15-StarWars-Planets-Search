@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { APIContext } from '../context/APIprovider';
 
 function ContainerFilters() {
@@ -6,6 +6,10 @@ function ContainerFilters() {
   const [filterColumn, setFilterColumn] = useState('population');
   const [symbolMath, setSymbolMath] = useState('maior que');
   const [filterValue, setFilterValue] = useState(0);
+
+  useEffect(() => {
+    setFilterColumn(columnOptions[0]);
+  }, [setFilterColumn, columnOptions]);
 
   const getColumnOptions = () => (columnOptions.map((select) => (
     <option value={ select } key={ select }>
