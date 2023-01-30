@@ -2,16 +2,12 @@ import React, { useContext, useState } from 'react';
 import { APIContext } from '../context/APIprovider';
 
 function ContainerFilters() {
-  const { handleButton } = useContext(APIContext);
+  const { handleButton, columnOptions } = useContext(APIContext);
   const [filterColumn, setFilterColumn] = useState('population');
   const [symbolMath, setSymbolMath] = useState('maior que');
   const [filterValue, setFilterValue] = useState(0);
 
-  const columnArray = [
-    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
-  ];
-
-  const getColumnOptions = () => (columnArray.map((select) => (
+  const getColumnOptions = () => (columnOptions.map((select) => (
     <option value={ select } key={ select }>
       { select }
     </option>
