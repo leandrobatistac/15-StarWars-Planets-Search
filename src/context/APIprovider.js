@@ -30,24 +30,28 @@ function APIProvider({ children }) {
     }
   };
 
-  const handleButtonFilter = ({ column, comparison, value }) => {
+  const filterFunction = ({ column, comparison, value }, array) => {
     if (comparison === 'maior que') {
-      const filteredArray = objectPlanets
+      const filteredArray = array
         .filter((planet) => planet[column] > Number(value));
       setFilteredObjectPlanets(filteredArray);
     }
 
     if (comparison === 'menor que') {
-      const filteredArray = objectPlanets
+      const filteredArray = array
         .filter((planet) => planet[column] < Number(value));
       setFilteredObjectPlanets(filteredArray);
     }
 
     if (comparison === 'igual a') {
-      const filteredArray = objectPlanets
+      const filteredArray = array
         .filter((planet) => planet[column] === (value));
       setFilteredObjectPlanets(filteredArray);
     }
+  };
+
+  const handleButton = (object) => {
+    filterFunction(object, filteredObjectPlanets);
   };
 
   const values = {
@@ -56,7 +60,8 @@ function APIProvider({ children }) {
     nameFilter,
     getFilteredInfos,
     filteredObjectPlanets,
-    handleButtonFilter,
+    filterFunction,
+    handleButton,
   };
 
   return (

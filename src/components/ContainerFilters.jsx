@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { APIContext } from '../context/APIprovider';
 
 function ContainerFilters() {
-  const { handleButtonFilter } = useContext(APIContext);
+  const { handleButton } = useContext(APIContext);
   const [filterColumn, setFilterColumn] = useState('population');
   const [symbolMath, setSymbolMath] = useState('maior que');
   const [filterValue, setFilterValue] = useState(0);
@@ -58,7 +58,7 @@ function ContainerFilters() {
         type="button"
         data-testid="button-filter"
         onClick={ () => {
-          handleButtonFilter({
+          handleButton({
             column: filterColumn,
             comparison: symbolMath,
             value: filterValue,
