@@ -30,8 +30,33 @@ function APIProvider({ children }) {
     }
   };
 
+  const handleButtonFilter = ({ column, comparison, value }) => {
+    if (comparison === 'maior que') {
+      const filteredArray = objectPlanets
+        .filter((planet) => planet[column] > Number(value));
+      setFilteredObjectPlanets(filteredArray);
+    }
+
+    if (comparison === 'menor que') {
+      const filteredArray = objectPlanets
+        .filter((planet) => planet[column] < Number(value));
+      setFilteredObjectPlanets(filteredArray);
+    }
+
+    if (comparison === 'igual a') {
+      const filteredArray = objectPlanets
+        .filter((planet) => planet[column] === (value));
+      setFilteredObjectPlanets(filteredArray);
+    }
+  };
+
   const values = {
-    objectPlanets, loading, nameFilter, getFilteredInfos, filteredObjectPlanets,
+    objectPlanets,
+    loading,
+    nameFilter,
+    getFilteredInfos,
+    filteredObjectPlanets,
+    handleButtonFilter,
   };
 
   return (
