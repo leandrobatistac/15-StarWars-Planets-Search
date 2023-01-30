@@ -1,10 +1,12 @@
-import { createContext, useMemo, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 export const APIContext = createContext();
 
 function APIProvider({ children }) {
   const [objectPlanets, setObjectPlanets] = useState(null);
+  const [filteredObjectPlanets, setFilteredObjectPlanets] = useState([]);
+  const [nameFilter, setNameFilter] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -18,9 +20,18 @@ function APIProvider({ children }) {
       });
   }, []);
 
-  const values = useMemo(() => ({
-    objectPlanets, loading,
-  }), [objectPlanets, loading]);
+  const getFilteredInfos = async (nameFiltered) => {
+    if (nameFiltered !== nameFilter) {
+      setNameFilter(nameFiltered);
+      const filteredArray = objectPlanets
+        .filter(({ name }) => name.toLowerCase().includes(nameFiltered.toLowerCase()));
+      setFilteredObjectPlanets(filteredArray);
+    }
+  };
+
+  const values = {
+    objectPlanets, loading, nameFilter, getFilteredInfos, filteredObjectPlanets,
+  };
 
   return (
     <APIContext.Provider value={ values }>
