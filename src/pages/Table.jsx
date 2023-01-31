@@ -13,15 +13,6 @@ function Table() {
     handleRemoveFilter,
   } = useContext(APIContext);
 
-  // const handleClickDel = ({ target }) => {
-  //   const nonDeletedFilters = filterObject
-  //     .filter((filter) => filter.column !== target.id);
-  //   const coluna = filterObject
-  //     .filter((filter) => filter.column === target.id);
-  //   setFilterObject(nonDeletedFilters);
-  //   setColumnOptions([coluna[0].column, ...columnOptions]);
-  // };
-
   const removeAll = () => {
     setFilteredObjectPlanets(objectPlanets);
     setColumnOptions(columnArray);
@@ -76,7 +67,7 @@ function Table() {
             <tbody>
               { filteredObjectPlanets.map((e) => (
                 <tr key={ e.name }>
-                  <th>{ e.name }</th>
+                  <th data-testid="planet-name">{ e.name }</th>
                   <th>{ e.climate }</th>
                   <th>{ e.created }</th>
                   <th>{ e.diameter }</th>

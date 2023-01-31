@@ -2,10 +2,12 @@ import React, { useContext, useState, useEffect } from 'react';
 import { APIContext } from '../context/APIprovider';
 
 function ContainerFilters() {
-  const { handleButton, columnOptions } = useContext(APIContext);
+  const { handleButton, columnOptions, handleSort } = useContext(APIContext);
   const [filterColumn, setFilterColumn] = useState('population');
   const [symbolMath, setSymbolMath] = useState('maior que');
   const [filterValue, setFilterValue] = useState(0);
+  const [sortColumn, setSortColumn] = useState('population');
+  const [sortRadio, setSortRadio] = useState('ASC');
 
   useEffect(() => {
     setFilterColumn(columnOptions[0]);
@@ -66,6 +68,53 @@ function ContainerFilters() {
         } }
       >
         Filtrar
+      </button>
+
+      <label htmlFor="select1">
+        Ordenar:
+        <select
+          name="column"
+          id="select1"
+          value={ sortColumn }
+          onChange={ ({ target: { value } }) => setSortColumn(value) }
+          data-testid="column-sort"
+        >
+          <option value="population">population</option>
+          <option value="orbital_period">orbital_period</option>
+          <option value="diameter" data-testid="option-diameter">diameter</option>
+          <option value="rotation_period">rotation_period</option>
+          <option value="surface_water">surface_water</option>
+        </select>
+        <label htmlFor="radio1">
+          <input
+            type="radio"
+            name="sort"
+            value="ASC"
+            onChange={ ({ target: { value } }) => setSortRadio(value) }
+            data-testid="column-sort-input-asc"
+          />
+          Ascendente
+        </label>
+        <label htmlFor="radio2">
+          <input
+            type="radio"
+            name="sort"
+            value="DESC"
+            onChange={ ({ target: { value } }) => setSortRadio(value) }
+            data-testid="column-sort-input-desc"
+          />
+          Descendente
+        </label>
+      </label>
+      <button
+        type="button"
+        onClick={ () => handleSort({
+          column: sortColumn,
+          sort: sortRadio,
+        }) }
+        data-testid="column-sort-button"
+      >
+        Ordenar
       </button>
     </form>
   );

@@ -13,6 +13,7 @@ function APIProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [columnOptions, setColumnOptions] = useState([columnArray]);
   const [filterObject, setFilterObject] = useState([]);
+  const [order, setOrder] = useState('');
 
   useEffect(() => {
     setLoading(true);
@@ -27,13 +28,28 @@ function APIProvider({ children }) {
       });
   }, []);
 
-  const getFilteredInfos = async (nameFiltered) => {
+  const sortByPopulationASC = (a, b) => {
+    const nameA = a.name.toLowerCase();
+    const nameB = b.name.toLowerCase();
+    const ONE_NEGATIVE = -1;
+    const ONE_POSITIVE = 1;
+    if (nameA < nameB) return ONE_NEGATIVE;
+    if (nameA > nameB) return ONE_POSITIVE;
+    return 0;
+  };
+
+  const getFilteredInfos = (nameFiltered) => {
     if (nameFiltered !== nameFilter) {
       setNameFilter(nameFiltered);
       const filteredArray = objectPlanets
-        .filter(({ name }) => name.toLowerCase().includes(nameFiltered.toLowerCase()));
+        .filter(({ name }) => name.toLowerCase().includes(nameFiltered.toLowerCase()))
+        .sort(sortByPopulationASC);
       setFilteredObjectPlanets(filteredArray);
     }
+  };
+
+  const saveOrder = (order1) => {
+    setOrdem(order1);
   };
 
   const filterFunction = ({ column, comparison, value }, array) => {
@@ -64,7 +80,8 @@ function APIProvider({ children }) {
   };
 
   const handleRemoveFilter = (option) => {
-    const filtersChange = filterObject.filter((filter) => filter !== option);
+    const filtersChange = filterObject.filter((filter) => filter !== option)
+      .sort(sortByPopulationASC);
     setFilterObject(filtersChange);
     setColumnOptions([...columnOptions, option.column]);
     const filteredArray = objectPlanets;
@@ -77,6 +94,44 @@ function APIProvider({ children }) {
     }
   };
 
+  const orderDataFilterBySort = (arrayString, arrayNumber, { column, sort }) => {
+    switch (sort) {
+    case 'ASC':
+      return [
+        ...arrayString,
+        ...arrayNumber.sort((a, b) => a[column] - b[column]),
+      ];
+    default:
+      return [
+        ...arrayNumber.sort((a, b) => b[column] - a[column]),
+        ...arrayString,
+      ];
+    }
+  };
+
+  const splitDataWithUnknown = (column) => [...filteredObjectPlanets]
+    .reduce((acc, curr) => {
+      if (curr[column] === 'unknown') {
+        acc.arrayString.push(curr);
+        return acc;
+      }
+      acc.arrayNumber.push(curr);
+      return acc;
+    }, {
+      arrayNumber: [],
+      arrayString: [],
+    });
+
+  const handleSort = (object) => {
+    setOrder(object);
+    const { column } = object;
+    const { arrayString, arrayNumber } = splitDataWithUnknown(column);
+    const sortedArrayData = orderDataFilterBySort(arrayString, arrayNumber, object);
+    const unknownColumn = sortedArrayData.filter((e) => e[column] === 'unknown');
+    const knownColumn = sortedArrayData.filter((e) => e[column] !== 'unknown');
+    setFilteredObjectPlanets([...knownColumn, ...unknownColumn]);
+  };
+
   const values = {
     loading,
     nameFilter,
@@ -85,6 +140,8 @@ function APIProvider({ children }) {
     filteredObjectPlanets,
     filterObject,
     columnArray,
+    order,
+    handleSort,
     handleRemoveFilter,
     setColumnOptions,
     handleButton,
@@ -92,6 +149,7 @@ function APIProvider({ children }) {
     getFilteredInfos,
     setFilterObject,
     setFilteredObjectPlanets,
+    saveOrder,
   };
 
   return (
