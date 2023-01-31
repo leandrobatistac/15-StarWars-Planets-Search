@@ -7,12 +7,12 @@ function APIProvider({ children }) {
   const columnArray = [
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
   ];
-
   const [objectPlanets, setObjectPlanets] = useState(null);
   const [filteredObjectPlanets, setFilteredObjectPlanets] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
   const [loading, setLoading] = useState(true);
   const [columnOptions, setColumnOptions] = useState([columnArray]);
+  const [filterObject, setFilterObject] = useState([]);
 
   useEffect(() => {
     setLoading(true);
@@ -60,6 +60,21 @@ function APIProvider({ children }) {
     filterFunction(object, filteredObjectPlanets);
     const newOptions = columnOptions.filter((option) => option !== object.column);
     setColumnOptions(newOptions);
+    setFilterObject([...filterObject, object]);
+  };
+
+  const handleRemoveFilter = (option) => {
+    const filtersChange = filterObject.filter((filter) => filter !== option);
+    setFilterObject(filtersChange);
+    setColumnOptions([...columnOptions, option.column]);
+    const filteredArray = objectPlanets;
+    if (filtersChange.length !== 0) {
+      for (let i = 0; i < filtersChange.length; i += 1) {
+        filterFunction(filtersChange[i], filteredArray);
+      }
+    } else {
+      setFilteredObjectPlanets(filteredArray);
+    }
   };
 
   const values = {
@@ -68,9 +83,15 @@ function APIProvider({ children }) {
     columnOptions,
     objectPlanets,
     filteredObjectPlanets,
+    filterObject,
+    columnArray,
+    handleRemoveFilter,
+    setColumnOptions,
     handleButton,
     filterFunction,
     getFilteredInfos,
+    setFilterObject,
+    setFilteredObjectPlanets,
   };
 
   return (
